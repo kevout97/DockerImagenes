@@ -1,12 +1,13 @@
 #!/bin/bash
-while [ 0 ] ; do
-    top -u named -n 1 | grep named
-    if [ $? -ne 0 ] ; then
-        /usr/sbin/named -g -u named 2> /dev/null &
-        if [ $? -eq 0 ]; then
-            echo "named runing..."
-        else
-            echo "The process could not be initialized"
-        fi
-    fi
+set -e
+if ! [ -f /etc/rndc.key ] ; then
+        rndc-confgen -a -c /etc/rndc.key
+        chgrp named /etc/rndc.key
+        chmod 640 /etc/rndc.key
+fi
+if [[ -z ${1} ]]; then
+  echo "Starting named..."
+  exec $(which named) -u named -g
+else
+  exec "$@"
 fi
