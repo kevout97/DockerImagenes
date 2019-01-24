@@ -1,0 +1,15 @@
+$TTL    14400
+@       IN      SOA     ctin.xyz.  . (
+                1267456417      ; Serial
+                10800   ; Refresh
+                3600    ; Retry
+                3600    ; Expire
+                3600)   ; Minimum
+    IN          NS  ns0
+    IN          A   201.161.89.62 ; Ip publica del servidor
+
+ns0           IN A        201.161.89.62 ; Ip publica del servidor
+jablab        IN A        201.161.97.8 ; IP de Jablab
+pfsense       IN A        201.161.89.61 ; IP de Pfsense
+*.jablab      IN A        201.161.97.8 ; IP de Jablab
+*.pfsense     IN A        201.161.89.61 ; IP de Pfsense
