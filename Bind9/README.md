@@ -2,80 +2,19 @@
 Acondicionar host
 
 ```bash
-mkdir -p /var/containers/bind/etc/named
-```
-
-Ejemplo de archivo **named.conf**
-
-```conf
-//
-// named.conf
-//
-// Provided by Red Hat bind package to configure the ISC BIND named(8) DNS
-// server as a caching only nameserver (as a localhost DNS resolver only).
-//
-// See /usr/share/doc/bind*/sample/ for example named configuration files.
-//
-// See the BIND Administrator's Reference Manual (ARM) for details about the
-// configuration located in /usr/share/doc/bind-{version}/Bv9ARM.html
-
-options {
-	listen-on port 53 { 127.0.0.1; };
-	listen-on-v6 port 53 { ::1; };
-	directory 	"/var/named";
-	dump-file 	"/var/named/data/cache_dump.db";
-	statistics-file "/var/named/data/named_stats.txt";
-	memstatistics-file "/var/named/data/named_mem_stats.txt";
-	recursing-file  "/var/named/data/named.recursing";
-	secroots-file   "/var/named/data/named.secroots";
-	allow-query     { localhost; };
-
-	/* 
-	 - If you are building an AUTHORITATIVE DNS server, do NOT enable recursion.
-	 - If you are building a RECURSIVE (caching) DNS server, you need to enable 
-	   recursion. 
-	 - If your recursive DNS server has a public IP address, you MUST enable access 
-	   control to limit queries to your legitimate users. Failing to do so will
-	   cause your server to become part of large scale DNS amplification 
-	   attacks. Implementing BCP38 within your network would greatly
-	   reduce such attack surface 
-	*/
-	recursion yes;
-
-	dnssec-enable yes;
-	dnssec-validation yes;
-
-	/* Path to ISC DLV key */
-	bindkeys-file "/etc/named.iscdlv.key";
-
-	managed-keys-directory "/var/named/dynamic";
-
-	pid-file "/run/named/named.pid";
-	session-keyfile "/run/named/session.key";
-};
-
-logging {
-        channel default_debug {
-                file "data/named.run";
-                severity dynamic;
-        };
-};
-
-zone "." IN {
-	type hint;
-	file "named.ca";
-};
-
-include "/etc/named.rfc1912.zones";
-include "/etc/named.root.key";
+groupadd named
+mkdir -p /var/containers/bind/var/named/zones
+chown root:named -R /var/containers/bind/var/named
+chmod 750 /var/containers/bind/var/named/zones
+echo "Ly8KLy8gbmFtZWQuY29uZgovLwovLyBQcm92aWRlZCBieSBSZWQgSGF0IGJpbmQgcGFja2FnZSB0byBjb25maWd1cmUgdGhlIElTQyBCSU5EIG5hbWVkKDgpIEROUwovLyBzZXJ2ZXIgYXMgYSBjYWNoaW5nIG9ubHkgbmFtZXNlcnZlciAoYXMgYSBsb2NhbGhvc3QgRE5TIHJlc29sdmVyIG9ubHkpLgovLwovLyBTZWUgL3Vzci9zaGFyZS9kb2MvYmluZCovc2FtcGxlLyBmb3IgZXhhbXBsZSBuYW1lZCBjb25maWd1cmF0aW9uIGZpbGVzLgovLwovLyBTZWUgdGhlIEJJTkQgQWRtaW5pc3RyYXRvcidzIFJlZmVyZW5jZSBNYW51YWwgKEFSTSkgZm9yIGRldGFpbHMgYWJvdXQgdGhlCi8vIGNvbmZpZ3VyYXRpb24gbG9jYXRlZCBpbiAvdXNyL3NoYXJlL2RvYy9iaW5kLXt2ZXJzaW9ufS9CdjlBUk0uaHRtbAoKb3B0aW9ucyB7CglsaXN0ZW4tb24gcG9ydCA1MyB7IDEyNy4wLjAuMTsgfTsKCWxpc3Rlbi1vbi12NiBwb3J0IDUzIHsgOjoxOyB9OwoJZGlyZWN0b3J5IAkiL3Zhci9uYW1lZCI7CglkdW1wLWZpbGUgCSIvdmFyL25hbWVkL2RhdGEvY2FjaGVfZHVtcC5kYiI7CglzdGF0aXN0aWNzLWZpbGUgIi92YXIvbmFtZWQvZGF0YS9uYW1lZF9zdGF0cy50eHQiOwoJbWVtc3RhdGlzdGljcy1maWxlICIvdmFyL25hbWVkL2RhdGEvbmFtZWRfbWVtX3N0YXRzLnR4dCI7CglyZWN1cnNpbmctZmlsZSAgIi92YXIvbmFtZWQvZGF0YS9uYW1lZC5yZWN1cnNpbmciOwoJc2Vjcm9vdHMtZmlsZSAgICIvdmFyL25hbWVkL2RhdGEvbmFtZWQuc2Vjcm9vdHMiOwoJYWxsb3ctcXVlcnkgICAgIHsgbG9jYWxob3N0OyB9OwoKCS8qIAoJIC0gSWYgeW91IGFyZSBidWlsZGluZyBhbiBBVVRIT1JJVEFUSVZFIEROUyBzZXJ2ZXIsIGRvIE5PVCBlbmFibGUgcmVjdXJzaW9uLgoJIC0gSWYgeW91IGFyZSBidWlsZGluZyBhIFJFQ1VSU0lWRSAoY2FjaGluZykgRE5TIHNlcnZlciwgeW91IG5lZWQgdG8gZW5hYmxlIAoJICAgcmVjdXJzaW9uLiAKCSAtIElmIHlvdXIgcmVjdXJzaXZlIEROUyBzZXJ2ZXIgaGFzIGEgcHVibGljIElQIGFkZHJlc3MsIHlvdSBNVVNUIGVuYWJsZSBhY2Nlc3MgCgkgICBjb250cm9sIHRvIGxpbWl0IHF1ZXJpZXMgdG8geW91ciBsZWdpdGltYXRlIHVzZXJzLiBGYWlsaW5nIHRvIGRvIHNvIHdpbGwKCSAgIGNhdXNlIHlvdXIgc2VydmVyIHRvIGJlY29tZSBwYXJ0IG9mIGxhcmdlIHNjYWxlIEROUyBhbXBsaWZpY2F0aW9uIAoJICAgYXR0YWNrcy4gSW1wbGVtZW50aW5nIEJDUDM4IHdpdGhpbiB5b3VyIG5ldHdvcmsgd291bGQgZ3JlYXRseQoJICAgcmVkdWNlIHN1Y2ggYXR0YWNrIHN1cmZhY2UgCgkqLwoJcmVjdXJzaW9uIHllczsKCglkbnNzZWMtZW5hYmxlIHllczsKCWRuc3NlYy12YWxpZGF0aW9uIHllczsKCgkvKiBQYXRoIHRvIElTQyBETFYga2V5ICovCgliaW5ka2V5cy1maWxlICIvZXRjL25hbWVkLmlzY2Rsdi5rZXkiOwoKCW1hbmFnZWQta2V5cy1kaXJlY3RvcnkgIi92YXIvbmFtZWQvZHluYW1pYyI7CgoJcGlkLWZpbGUgIi9ydW4vbmFtZWQvbmFtZWQucGlkIjsKCXNlc3Npb24ta2V5ZmlsZSAiL3J1bi9uYW1lZC9zZXNzaW9uLmtleSI7Cn07Cgpsb2dnaW5nIHsKICAgICAgICBjaGFubmVsIGRlZmF1bHRfZGVidWcgewogICAgICAgICAgICAgICAgZmlsZSAiZGF0YS9uYW1lZC5ydW4iOwogICAgICAgICAgICAgICAgc2V2ZXJpdHkgZHluYW1pYzsKICAgICAgICB9Owp9OwoKem9uZSAiLiIgSU4gewoJdHlwZSBoaW50OwoJZmlsZSAibmFtZWQuY2EiOwp9OwoKaW5jbHVkZSAiL2V0Yy9uYW1lZC5yZmMxOTEyLnpvbmVzIjsKaW5jbHVkZSAiL2V0Yy9uYW1lZC5yb290LmtleSI7" | base64 -w0 -d > /var/containers/bind/etc/named.conf
+chown root:named /var/containers/bind/etc/named.conf
+chmod 644 /var/containers/bind/etc/named.conf
 ```
 
 Docker run:
 ```bash
 docker run -d --name bind_dns --hostname BindDNS -p 53:53 \
                 -v /var/containers/bind/etc/named.conf:/etc/named.conf:z \
-                -v /var/containers/bind/etc/named.iscdlv.key:/etc/named.iscdlv.key:z \
-                -v /var/containers/bind/etc/named.rfc1912.zones:/etc/named.rfc1912.zones:z \
-                -v /var/containers/bind/etc/named:/etc/named:z \
+				-v /var/containers/bind/var/named/zones:/var/named/zones:z \
                 kevout/bind
 ```

@@ -7,7 +7,7 @@ if ! [ -f /etc/rndc.key ] ; then
 fi
 if [[ -z ${1} ]]; then
   echo "Starting named..."
-  exec $(which named) -u named -g
+  exec $(which named) -u named -g 
 else
   exec "$@"
 fi

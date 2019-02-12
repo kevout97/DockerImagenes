@@ -7,6 +7,8 @@ elif [ -z "$MYSQL_USER" ]; then
     exit 1
 elif [ -z "$MYSQL_PASSWORD" ]; then
     echo "WARNING: Empty password"
+    echo "Runnig server...."
+    python Crud.py $MYSQL_HOST $MYSQL_USER $MYSQL_PASSWORD
 else
     echo "Runnig server...."
     python Crud.py $MYSQL_HOST $MYSQL_USER $MYSQL_PASSWORD
