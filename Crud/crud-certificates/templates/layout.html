@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Dominios Infraestructura</title>
+    <!-- BOOSTRAP 4 -->
+    <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap/font-awesome.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/fonts/icon.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/fonts/fontRoboto.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/estilos.css')}}">
+    <link rel="shortcut icon" href="{{url_for('static', filename='images/iconoInfra.png')}}" />
+  </head>
+  <body>
+
+    <!-- NAVIGATION  -->
+    <nav class="navbar navbar-dark bg-dark">
+      <a class="navbar-brand" href="/">Dominios Infraestructura</a>
+    </nav>
+
+    <div class="container pt-4">
+      {% block body %}
+      {% endblock %}
+    </div>
+
+    <!-- footer -->
+    <!-- scripts -->
+    <script src="{{url_for('static', filename='js/jquery/jquery-3.3.1.slim.min.js')}}" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="{{url_for('static', filename='js/popper.min.js')}}" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="{{url_for('static', filename='js/bootstrap/bootstrap.min.js')}}" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script src="{{url_for('static', filename='js/main.js')}}"></script>
+  </body>
+</html>

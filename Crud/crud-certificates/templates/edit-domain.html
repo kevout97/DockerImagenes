@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block body %}
+
+  <div class="row">
+    <div class="col-md-4 offset-md-4">
+      <div class="card card-body">
+        <form action="/update/{{domain.0}}" method="POST" id="update-form">
+          <div class="form-group">
+            <input type="text" name="fulldomain" value="{{domain.1}}" class="form-control">
+          </div>
+          <div class="form-group">
+            <input type="date" name="expiration_date" value="{{domain.2}}" class="form-control">
+          </div>
+          <div class="form-group">
+            <!-- <input type="text" name="description" value="{{domain.3}}" class="form-control"> -->
+            <textarea form="update-form" name="description" placeholder="Descripción" class="form-control">{{domain.3}}</textarea>
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block">
+              Actualizar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
