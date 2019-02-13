@@ -2,7 +2,7 @@
 MYSQL_INSTANCE_NAME=mysql57
 
 mkdir /var/containers/${MYSQL_INSTANCE_NAME}/{var/log/mysql,var/lib/mysql,var/backups/ejecucionesscript,etc/mysql,tmp} -p
-chmod 777 -R /var/containers/${MYSQL_INSTANCE_NAME}
+chmod 777 -R /var/containers/${MYSQL_INSTANCE_NAME}/tmp
 docker run -td  -v /var/containers/${MYSQL_INSTANCE_NAME}/var/log/mysql/:/var/log/mysql/:z \
                 -v /var/containers/${MYSQL_INSTANCE_NAME}/var/lib/mysql/:/var/lib/mysql/:z \
                 -v /var/containers/${MYSQL_INSTANCE_NAME}/etc/mysql/:/etc/mysql/:z \
