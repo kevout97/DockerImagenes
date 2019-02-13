@@ -15,4 +15,4 @@ RUN yum update -y && yum upgrade -y && \
     pip install flask && \
     pip install flask-mysqldb
 ENTRYPOINT [ "/entrypoint.sh" ]
-EXPOSE 3000, 3306
+EXPOSE 3000 3306

@@ -15,5 +15,5 @@ docker run -td  -v /var/containers/${MYSQL_INSTANCE_NAME}/var/log/mysql/:/var/lo
                 -v /etc/localtime:/etc/localtime:ro \
                 -e 'MYSQL_ROOT_PASSWORD=crud' \
                 --name=${MYSQL_INSTANCE_NAME} \
-                -p 3306:3306 \
                 mysql:5.7
+                

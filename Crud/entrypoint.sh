@@ -12,4 +12,5 @@ elif [ -z "$MYSQL_PASSWORD" ]; then
 else
     echo "Runnig server...."
     python Crud.py $MYSQL_HOST $MYSQL_USER $MYSQL_PASSWORD
+    exec "$@"
 fi
